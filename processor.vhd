@@ -44,14 +44,14 @@ begin
 	pc_next <= pc_no_branch when (ALU_zero_and_branch = '0') else pc_branch;
 	
 	-- instruction memory
-	Instruction_memory: entity Instruction_memory
+	Instruction_memory: entity work.Instruction_memory
 		port map (
 			PC => pc_current,
 			instruction => instruction
 		);
 		
 	-- control unit
-	control: entity control
+	control: entity work.control
 	port map (
 		instr7 => instruction (6 downto 0),
 		ALUSrc => ALUSrc,
@@ -65,7 +65,7 @@ begin
 	
 	mux_out_data_memory <= read_data_data_memory when (mem_to_reg = '1') else ALU_result_internal;
 	-- registers file
-	register_file: entity register_file
+	register_file: entity work.register_file
 	port map (
 		CLK => CLK,
 		RST => RST,
@@ -79,14 +79,14 @@ begin
 	);
 	
 	-- sign extension unit (imm_gen)
-	imm_gen: entity imm_gen
+	imm_gen: entity work.imm_gen
 	port map (
 		instr => instruction,
 		sign_extended_instr => sign_extended_instruction
 	);
 	
 	-- alu control unit
-	alu_control: entity ALU_control
+	alu_control: entity work.ALU_control
 	port map (
 		ALUOp => ALUOp,
       funct7 => instruction (31 downto 25),
@@ -96,7 +96,7 @@ begin
 	
 	mux_out_register_file <= read_data2 when (ALUSrc = '0') else sign_extended_instruction;
 	-- alu unit
-	alu: entity ALU
+	alu: entity work.ALU
 	port map (
 		A => read_data1,
       B => mux_out_register_file,
@@ -106,7 +106,7 @@ begin
 	);
 	
 	-- data memory
-	data_memory: entity data_memory
+	data_memory: entity work.data_memory
 	port map (
 		CLK => CLK,
       mem_write_en => mem_write,

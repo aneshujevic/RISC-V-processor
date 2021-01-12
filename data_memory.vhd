@@ -19,8 +19,12 @@ architecture Behavioral of data_memory is
 	-- initialise it all to zeroes
 	signal RAM: memory_type := ((others => (others => '0')));
 begin
+	-- testing purposes, we load value from this address in test bench
+	-- RAM(4) <= x"000000000000000f";
+	-- RAM(8) <= x"0000000000000007";
 	-- last four bits are needed for addressing inside of one row of memory which is 64 bits length
-	ram_addr <= mem_access_addr(19 downto 4);
+	-- ram_addr <= mem_access_addr(19 downto 4); proveri sa Aminom
+	ram_addr <= mem_access_addr(15 downto 0);
 	process (CLK)
 	begin
 		if (rising_edge(CLK)) then
